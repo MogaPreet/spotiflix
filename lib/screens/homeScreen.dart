@@ -121,29 +121,33 @@ class _HomePageState extends State<HomePage> {
                         TextButton(
                           onPressed: () {},
                           style: TextButton.styleFrom(
-                            fixedSize: const Size(120, 15),
-                            backgroundColor: Colors.red.withOpacity(0.8),
+                            fixedSize: const Size(150, 15),
+                            backgroundColor: Colors.white,
+                            
                             elevation: 4,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6)),
                             foregroundColor: Colors.white,
                           ),
-                          child: const Row(
+                          child:  Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
-                                Icons.play_arrow_rounded,
+                                Icons.play_circle_fill,
                                 size: 18,
                               ),
                               SizedBox(
                                 width: 4,
                               ),
                               Text(
-                                "Play",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    wordSpacing: .8),
+                                "Watch Now",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      color: Colors.black,  
+                              ),
                               ),
                             ],
                           ),

@@ -1,7 +1,11 @@
+import 'dart:ui';
+
 import 'package:expproj/screens/homeScreen.dart';
 import 'package:expproj/screens/search.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 void main() {
   runApp(
@@ -18,21 +22,99 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'UI',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(
-        useMaterial3: true,
-      ).copyWith(
-          scaffoldBackgroundColor: const Color.fromARGB(255, 18, 18, 18),
-          textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: Color.fromARGB(255, 18, 18, 18),
-          ),
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Color.fromARGB(255, 18, 18, 18),
-          )),
-      themeMode: ThemeMode.dark,
-      home: const AppScaffold(),
-    );
+  title: 'UI',
+  debugShowCheckedModeBanner: false,
+  theme: ThemeData.dark(
+    useMaterial3: true,
+  ).copyWith(
+    scaffoldBackgroundColor: const Color(0xFF121212), // Deep Black
+    primaryColor: const Color(0xFFBF3A34), // Deep Coral
+    colorScheme: const ColorScheme.dark(
+      primary: Color(0xFFBF3A34), // Deep Coral
+      secondary: Color(0xFF1DB954), // Spotify Green
+      error: Color(0xFFE50914), // Netflix Red
+    ),
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Color(0xFFBF3A34), // Cursor in Primary Color
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF121212),
+      elevation: 0,
+      centerTitle: true,
+      titleTextStyle: TextStyle(
+        color: Colors.white,
+        fontFamily: 'Poppins',
+        fontWeight: FontWeight.w600,
+        fontSize: 18,
+      ),
+    ),
+    textTheme: TextTheme(
+      displayLarge: GoogleFonts.poppins().copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.w700,
+        fontSize: 32,
+      ),
+      displayMedium: GoogleFonts.poppins().copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+        fontSize: 24,
+      ),
+      displaySmall: GoogleFonts.poppins().copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+        fontSize: 20,
+      ),
+      bodyLarge: GoogleFonts.poppins().copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
+      ),
+      bodyMedium: GoogleFonts.poppins().copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.w400,
+        fontSize: 14,
+      ),
+      bodySmall: GoogleFonts.poppins().copyWith(
+        color: Color(0xFFB3B3B3),
+        fontWeight: FontWeight.w400,
+        fontSize: 12,
+      ),
+      titleLarge: GoogleFonts.poppins().copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.w700,
+        fontSize: 18,
+      ),
+      titleMedium: GoogleFonts.poppins().copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+      ),
+      titleSmall: GoogleFonts.poppins().copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+        fontSize: 14,
+      ),
+      labelLarge: GoogleFonts.poppins().copyWith(
+        color: const Color(0xFFBF3A34), // Primary for Emphasis
+        fontWeight: FontWeight.w700,
+        fontSize: 16,
+      ),
+      labelMedium: GoogleFonts.poppins().copyWith(
+        color: const Color(0xFF1DB954), // Spotify Green for CTA
+        fontWeight: FontWeight.w600,
+        fontSize: 14,
+      ),
+      labelSmall: GoogleFonts.poppins().copyWith(
+        color: const Color(0xFFE50914), // Netflix Red for Alerts
+        fontWeight: FontWeight.w500,
+        fontSize: 12,
+      ),
+    ),
+  ),
+  themeMode: ThemeMode.dark,
+  home: const AppScaffold(),
+);
+
   }
 }
 
@@ -55,24 +137,80 @@ class _AppScaffoldState extends State<AppScaffold> {
     ];
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 56,
-        leading: Container(
-          alignment: Alignment.center,
-          margin: const EdgeInsets.only(left: 20),
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.fromBorderSide(
-                  BorderSide(color: Colors.yellowAccent.withOpacity(.5))),
-              color: Colors.purple),
-          child: const Text(
-            "P",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+       
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // Frosted effect
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 0, 0, 0),
+                    Color.fromARGB(180, 0, 0, 0),
+                    Color.fromARGB(100, 0, 0, 0),
+                    Color.fromARGB(30, 0, 0, 0),
+                    Colors.transparent
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [
+                    0.0,
+                    0.4,
+                    0.65,
+                    0.85,
+                    1.0
+                  ], // Adjusted for smoother fade
+                ),
+              ),
+            ),
           ),
         ),
-        title: Text(bottomNavProvider.appBarTitle),
+        leading: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.zero,
+          margin: const EdgeInsets.only(left: 20),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.fromBorderSide(
+              BorderSide(color: Colors.yellowAccent.withOpacity(.5)),
+            ),
+            color: Colors.purple,
+          ),
+          child: Text(
+            "P",
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(),
+          ),
+        ),
+        centerTitle: false,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              bottomNavProvider.appBarTitle,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            Shimmer.fromColors(
+              baseColor: Colors.grey.shade700,
+              highlightColor: Colors.grey.shade500,
+              period: const Duration(seconds: 2),
+              child: Text(
+                "Your binge starts here",
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+              ),
+            )
+          ],
+        ),
         actions: const [
           Padding(
-              padding: EdgeInsets.only(right: 15), child: Icon(Icons.settings))
+            padding: EdgeInsets.only(right: 15),
+            child: Icon(Icons.settings),
+          ),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

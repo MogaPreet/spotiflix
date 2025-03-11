@@ -31,54 +31,63 @@ class _SectionsState extends State<Sections> {
         Padding(
           padding: const EdgeInsets.only(
             left: 20,
+        
           ),
           child: Text(
             widget.title,
-            style: const TextStyle(
-              fontSize: 20,
-              color: Colors.white,
+            style:Theme.of(context).textTheme.bodyLarge!.copyWith(
               fontWeight: FontWeight.bold,
-            ),
           ),
+          )
         ),
         SizedBox(
-          height: 175,
-          child: ListView.builder(
-            padding:
-                const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
-            scrollDirection: Axis.horizontal,
-            itemCount: imageUrls.length,
-            itemBuilder: (context, index) {
-              return Container(
-                alignment: Alignment.center,
-                
-                decoration: BoxDecoration(
-                  
-                    color: const Color.fromARGB(255, 37, 35, 35),
-                    borderRadius: BorderRadius.circular(8)),
-                    clipBehavior: Clip.hardEdge,
-                    
-                margin: const EdgeInsets.only(left: 10),
-                child: Image.network(imageUrls[index],
-                  loadingBuilder:
-                                  (context,  child, loadingProgress) {
-                                if (loadingProgress == null) return child;
+  height: 180,
+  child: GridView.builder(
+    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+      maxCrossAxisExtent: 200,
+      childAspectRatio: 3 / 4,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 5,
+      mainAxisExtent: 120, 
+    ),
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    scrollDirection: Axis.horizontal,
+    itemCount: imageUrls.length,
+    itemBuilder: (context, index) {
+      return Container(
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 37, 35, 35),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        clipBehavior: Clip.hardEdge,
+        margin: const EdgeInsets.only(left: 10),
+        child: Image.network(
+          imageUrls[index],
+          fit: BoxFit.cover, // Ensures the image covers the container properly
+          width: double.infinity,
+          height: double.infinity,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
 
-                                return Shimmer.fromColors(
-                                  baseColor: Colors.grey[800]!,
-                                  highlightColor: Colors.grey[700]!,
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    color: Colors.grey[800],
-                                  ),
-                                );
-                              },
-                )
-              );
-            },
+            return Shimmer.fromColors(
+              baseColor: Colors.grey[800]!,
+              highlightColor: Colors.grey[700]!,
+              child: Container(
+                width: double.infinity,
+                height: double.infinity, // Matches container height
+                color: Colors.grey[800],
+              ),
+            );
+          },
+          errorBuilder: (context, error, stackTrace) => const Icon(
+            Icons.broken_image,
+            color: Colors.grey,
           ),
         ),
+      );
+    },
+  ),
+)
       ],
     );
   }
