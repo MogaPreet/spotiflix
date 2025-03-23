@@ -1,99 +1,45 @@
 import 'package:flutter/material.dart';
+import '../models/movie_model.dart';
 
-class SearchSugestionCard extends StatelessWidget {
-  const SearchSugestionCard({super.key});
+class SearchSuggestionCard extends StatelessWidget {
+  final Movie movie;
+  final VoidCallback onTap;
+  
+  const SearchSuggestionCard({
+    Key? key, 
+    required this.movie, 
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      
-      margin: const EdgeInsets.only(bottom: 15),
-      height: 135,
-      decoration: BoxDecoration(
-          color: Colors.black.withOpacity(.5),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.withOpacity(.5), width: .5)),
-      clipBehavior: Clip.hardEdge,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 100,
-            height: 135,
-            child: Image.asset(
-              'assets/images/2.PNG',
-              fit: BoxFit.fitHeight,
-            ),
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(vertical: 4),
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(6),
+        child: Image.network(
+          movie.imageUrl,
+          width: 50,
+          height: 70,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => Container(
+            color: Colors.grey[800],
+            width: 50,
+            height: 70,
+            child: const Icon(Icons.image_not_supported, color: Colors.white54),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Chor nikal ke bhaga",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const Text(
-                  'Action | Thriller | Comedy',
-                  style: TextStyle(fontSize: 10, color: Colors.grey),
-                ),
-                const Row(
-                  children: [
-                    Text(
-                      'TOP 10',
-                      style: TextStyle(fontSize: 10, color: Colors.white),
-                    ),
-                    Icon(
-                      Icons.trending_up_rounded,
-                      color: Color.fromARGB(255, 178, 49, 40),
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black.withOpacity(.8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            )),
-                        child: const Row(
-                          children: [
-                            Icon(Icons.add_rounded),
-                            Text(
-                              'Wishlist',
-                              style: TextStyle(),
-                            )
-                          ],
-                        )),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                    ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                     
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black.withOpacity(.8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            )),
-                        child: const Row(
-                          children: [Icon(Icons.play_arrow_rounded), Text('Play')],
-                        ))
-                  ],
-                ),
-              ],
-            ),
-          )
-        ],
+        ),
       ),
+      title: Text(
+        movie.title,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        '${movie.releaseYear} • ${movie.rating} ★',
+        style: TextStyle(color: Colors.grey[600], fontSize: 12),
+      ),
+      onTap: onTap,
     );
   }
 }
