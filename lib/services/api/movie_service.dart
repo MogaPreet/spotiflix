@@ -47,6 +47,9 @@ class MovieService {
     }
   }
 
+  // Get all movies with limit
+
+
   // Get featured movies
   // Future<List<Movie>> getFeaturedMovies() async {
   //   try {

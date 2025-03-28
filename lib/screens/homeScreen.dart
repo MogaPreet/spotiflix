@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expproj/components/section_builder.dart';
+import 'package:expproj/screens/category_movies_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:expproj/services/session_manager.dart';
@@ -394,14 +395,24 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: _isAdmin ? FloatingActionButton(
-        onPressed: () => _showMovieManagementOptions(context),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        child: const Icon(Icons.movie_filter),
-        tooltip: 'Manage Movies',
-      ) : null,
-    );
+    floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+    floatingActionButton: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Reels button - visible to all users
+        
+        // Admin button - visible only to admins
+        if (_isAdmin) 
+          FloatingActionButton(
+            heroTag: 'admin_button',
+            onPressed: () => _showMovieManagementOptions(context),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            child: const Icon(Icons.movie_filter),
+            tooltip: 'Manage Movies',
+          ),
+      ],
+    ),
+  );
   }
 
   // Get appropriate greeting based on time of day
@@ -554,6 +565,24 @@ class _HomePageState extends State<HomePage> {
     required List<Movie> movies,
     bool showRanking = false,
   }) {
+    // Determine category type based on the title
+    String categoryType = 'all';
+    String? genre;
+    String? language;
+    String? contentType;
+  
+    if (title == "Top 10") {
+      categoryType = 'top';
+    } else if (title == "Arrived this year") {
+      categoryType = 'new';
+    } else if (title == "Latest in Hindi") {
+      categoryType = 'language';
+      language = 'Hindi';
+    } else if (title == "Top Series") {
+      categoryType = 'contentType';
+      contentType = 'series';
+    }
+  
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -571,7 +600,35 @@ class _HomePageState extends State<HomePage> {
               ),
               GestureDetector(
                 onTap: () {
-                  // Handle see all
+                  // Navigate to the category page with a hero animation
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => CategoryMoviesScreen(
+                        title: title,
+                        categoryType: categoryType,
+                        genre: genre,
+                        language: language,
+                        contentType: contentType,
+                      ),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const begin = Offset(1.0, 0.0);
+                        const end = Offset.zero;
+                        const curve = Curves.easeInOutQuart;
+                        
+                        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                        var offsetAnimation = animation.drive(tween);
+                        
+                        return SlideTransition(
+                          position: offsetAnimation,
+                          child: FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          ),
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 400),
+                    ),
+                  );
                 },
                 child: Row(
                   children: [

@@ -3,6 +3,7 @@ import 'package:expproj/controllers/auth_controller.dart';
 import 'package:expproj/controllers/bottom_nav_provider.dart';
 import 'package:expproj/screens/homeScreen.dart';
 import 'package:expproj/screens/library_screen.dart';
+import 'package:expproj/screens/reels_screen.dart'; // Import the ReelsScreen
 import 'package:expproj/screens/search.dart';
 import 'package:expproj/services/session_manager.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +70,7 @@ class _AppScaffoldState extends State<AppScaffold> {
     final bottomNavProvider = Provider.of<BottomNavProvider>(context);
     final List<Widget> _pages = [
       const HomePage(),
+      const ReelsScreen(), // Add ReelsScreen as the second page
       const SearchPage(),
       const LibraryPage(),
     ];
@@ -142,7 +144,7 @@ class _AppScaffoldState extends State<AppScaffold> {
                 ? 20 // For devices with home indicator like newer iPhones
                 : 10, // For devices without home indicator
           ),
-          // The actual BottomNavigationBar with backdrop filter
+          // The updated BottomNavigationBar with Reels
           child: BottomNavigationBar(
             currentIndex: bottomNavProvider.currentIndex,
             onTap: (index) {
@@ -171,16 +173,23 @@ class _AppScaffoldState extends State<AppScaffold> {
                     : const Icon(Icons.home_outlined, size: 26),
                 label: 'Home',
               ),
-              // Search item with custom icon and indicator
+              // Reels item - NEW!
               BottomNavigationBarItem(
                 icon: bottomNavProvider.currentIndex == 1
+                    ? _buildSelectedIcon(Icons.movie)
+                    : const Icon(Icons.movie_outlined, size: 26),
+                label: 'Trailers',
+              ),
+              // Search item with custom icon and indicator
+              BottomNavigationBarItem(
+                icon: bottomNavProvider.currentIndex == 2
                     ? _buildSelectedIcon(Icons.search)
                     : const Icon(Icons.search, size: 26),
                 label: 'Search',
               ),
               // Library item with custom icon and indicator
               BottomNavigationBarItem(
-                icon: bottomNavProvider.currentIndex == 2
+                icon: bottomNavProvider.currentIndex == 3
                     ? _buildSelectedIcon(Icons.library_music)
                     : const Icon(Icons.library_music_outlined, size: 26),
                 label: 'Library',

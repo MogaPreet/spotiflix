@@ -1,5 +1,6 @@
 import 'package:expproj/screens/admin/add_movie_screen.dart';
 import 'package:expproj/screens/movie_detail_screen.dart';
+import 'package:expproj/screens/reels_screen.dart';
 import 'package:expproj/screens/trailer_player_screen.dart';
 import 'package:flutter/material.dart';
 import '../views/authentication/login_page.dart';
@@ -23,5 +24,6 @@ class AppRoutes {
         title: args['title'] as String,
       );
     },
+    '/reels': (context) => const ReelsScreen(),
   };
 }
