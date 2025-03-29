@@ -32,7 +32,7 @@ Spotiflix is a cross-platform media streaming application that combines the best
 ## 🚀 Installation
 
 1. **Prerequisites**:
-- Flutter (latest stable version)
+- Flutter (version 3.10.0 or higher)
 - Dart
 - Git
 - An Appwrite instance (for backend)
@@ -63,13 +63,23 @@ flutter run
 ```
 lib/
 ├── main.dart           # Application entry point
+├── components/         # Reusable UI components
+├── config/             # Configuration files
+│   └── theme/          # Theme configuration
+├── controllers/        # Controller logic
 ├── models/             # Data models
-├── providers/          # State management
 ├── screens/            # Application screens
+│   ├── admin/          # Admin screens
+│   └── Login/          # Login screens
 ├── services/           # API and backend services
+│   └── api/            # API service implementations
 ├── utils/              # Utility functions
-├── widgets/            # Reusable UI components
-└── constants/          # App constants and theme data
+└── views/              # UI views
+    ├── authentication/ # Authentication views
+    ├── home/           # Home screen views
+    ├── library/        # Library views
+    ├── search/         # Search views
+    └── shared/         # Shared views
 ```
 
 <!-- ## 📸 Screenshots
