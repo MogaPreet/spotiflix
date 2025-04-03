@@ -633,7 +633,7 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   children: [
                     Text(
-                      'See All',
+                      'See All ',
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.bold,
