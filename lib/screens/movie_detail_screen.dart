@@ -1,3 +1,4 @@
+import 'package:expproj/components/video_player.dart';
 import 'package:expproj/config/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -766,6 +767,25 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       ),
     );
   }
+  
+ void _showVideoPlayer(BuildContext context) {
+    // Random video URLs for demo (you can replace with actual movie URLs)
+    final List<String> demoVideos = [
+     'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+    ];
+    
+    
+    
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VideoPlayerScreen(
+          videoUrl: demoVideos[0],
+          movieTitle: _movie?.title ?? 'Movie',
+        ),
+      ),
+    );
+  }
 
 // Update to add animated sections
 Widget _buildMovieDetails() {
@@ -1080,9 +1100,7 @@ Widget _buildActionButtons(bool hasTrailer) {
             ),
           ),
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Playing movie...')),
-            );
+           _showVideoPlayer(context);
           },
           icon: const Icon(Icons.play_arrow),
           label: const Text('Play'),

@@ -119,7 +119,7 @@ class _AppScaffoldState extends State<AppScaffold> {
         body: _pages[bottomNavProvider.currentIndex],
           resizeToAvoidBottomInset: false,
 
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -139,11 +139,7 @@ class _AppScaffoldState extends State<AppScaffold> {
             ),
           ),
           // Add padding for iOS devices with home indicator
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).padding.bottom > 0
-                ? 20 // For devices with home indicator like newer iPhones
-                : 10, // For devices without home indicator
-          ),
+          
           // The updated BottomNavigationBar with Reels
           child: BottomNavigationBar(
             currentIndex: bottomNavProvider.currentIndex,
