@@ -120,7 +120,11 @@ class _AppScaffoldState extends State<AppScaffold> {
           resizeToAvoidBottomInset: false,
 
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        
         floatingActionButton: Container(
+
+          width: double.infinity,
+
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -142,6 +146,7 @@ class _AppScaffoldState extends State<AppScaffold> {
           
           // The updated BottomNavigationBar with Reels
           child: BottomNavigationBar(
+          
             currentIndex: bottomNavProvider.currentIndex,
             onTap: (index) {
               bottomNavProvider.updateIndex(index);

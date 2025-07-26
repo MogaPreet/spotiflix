@@ -1457,6 +1457,7 @@ Widget _buildSimilarMoviesWrapper() {
                       child: Image.network(
                         similarMovie.imageUrl,
                         fit: BoxFit.cover,
+                        width: double.infinity,
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
                           return Shimmer.fromColors(

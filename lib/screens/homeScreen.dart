@@ -416,48 +416,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Get appropriate greeting based on time of day
-  String _getGreeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) {
-      return 'Good morning';
-    } else if (hour < 17) {
-      return 'Good afternoon';
-    } else {
-      return 'Good evening';
-    }
-  }
 
   // Get initials from full name
-  String _getInitials(String fullName) {
-    List<String> names = fullName.split(' ');
-    String initials = '';
-    
-    if (names.isNotEmpty) {
-      initials += names[0][0];
-      
-      if (names.length > 1) {
-        initials += names[names.length - 1][0];
-      }
-    }
-    
-    return initials.toUpperCase();
-  }
 
   // Build a shimmering loading effect for the text
-  Widget _buildShimmeringText(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[800]!,
-      highlightColor: Colors.grey[600]!,
-      child: Container(
-        width: 120,
-        height: 32,
-        decoration: BoxDecoration(
-          color: Colors.grey[700],
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-    );
-  }
 
   // Add this method to show movie management options
   void _showMovieManagementOptions(BuildContext context) {
