@@ -168,7 +168,8 @@ class _HomePageState extends State<HomePage> {
                               : CarouselSlider(
                                   options: CarouselOptions(
                                     height: double.infinity,
-                                    viewportFraction: 1.0,
+                                    
+                                    viewportFraction: 1.1,
                                     autoPlay: true,
                                     autoPlayInterval: const Duration(seconds: 7),
                                     enableInfiniteScroll: _featuredMovies.length > 1,
@@ -272,76 +273,133 @@ class _HomePageState extends State<HomePage> {
                                 ),
                           ),
                           // Your existing gradient overlays...
-                          Positioned(
-                            bottom: 0,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 120,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 18, 18, 18),
-                                    Color.fromARGB(200, 18, 18, 18),
-                                    Color.fromARGB(150, 18, 18, 18),
-                                    Color.fromARGB(100, 18, 18, 18),
-                                    Colors.transparent
-                                  ],
-                                  begin: Alignment.bottomCenter,
-                                  end: Alignment.topCenter,
-                                  stops: [0.0, 0.3, 0.50, 0.7, 1.0],
-                                )
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const Icon(Icons.add_rounded),
-                                  TextButton(
-                                    onPressed: () {
-                                      if (_featuredMovies.isNotEmpty) {
-                                        Navigator.pushNamed(
-                                          context, 
-                                          '/movie-detail',
-                                          arguments: {'id': _featuredMovies.first.id},
-                                        );
-                                      }
-                                    },
-                                    style: TextButton.styleFrom(
-                                      fixedSize: const Size(150, 15),
-                                      backgroundColor: Colors.white,
-                                      elevation: 4,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(6)),
-                                      foregroundColor: Colors.white,
-                                    ),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.play_circle_fill,
-                                          size: 18,
-                                        ),
-                                        const SizedBox(
-                                          width: 4,
-                                        ),
-                                        Text(
-                                          "Watch Now",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall!
-                                              .copyWith(
-                                                color: Colors.black,  
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const Icon(Icons.favorite_rounded)
-                                ],
-                              ),
-                            ),
-                          )
+                         Positioned(
+  bottom: 0,
+  child: Container(
+    alignment: Alignment.bottomCenter,
+    height: 150, // Reduced from 400 to 150
+    width: MediaQuery.of(context).size.width,
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          Color.fromARGB(255, 18, 18, 18),    // Solid dark at bottom
+          Color.fromARGB(240, 18, 18, 18),    // Very strong
+          Color.fromARGB(200, 18, 18, 18),    // Strong fade
+          Color.fromARGB(160, 18, 18, 18),    // Medium fade
+          Color.fromARGB(120, 18, 18, 18),    // Light fade
+          Color.fromARGB(80, 18, 18, 18),     // Very light fade
+          Color.fromARGB(40, 18, 18, 18),     // Barely visible
+          Colors.transparent                   // Completely transparent
+        ],
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+        stops: [0.0, 0.15, 0.30, 0.45, 0.60, 0.75, 0.90, 1.0],
+      )
+    ),
+    child: Padding(
+      padding: const EdgeInsets.only(bottom: 20), // Add padding from bottom
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // Enhanced Add to List button
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(25),
+              border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
+            ),
+            child: IconButton(
+              onPressed: () {
+                // Add to list functionality
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Added to My List')),
+                );
+              },
+              icon: const Icon(Icons.add_rounded, color: Colors.white, size: 24),
+              iconSize: 24,
+            ),
+          ),
+          
+          // Enhanced Play button
+          Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: TextButton(
+              onPressed: () {
+                if (_featuredMovies.isNotEmpty) {
+                  Navigator.pushNamed(
+                    context, 
+                    '/movie-detail',
+                    arguments: {'id': _featuredMovies.first.id},
+                  );
+                }
+              },
+              style: TextButton.styleFrom(
+                fixedSize: const Size(140, 45), // Slightly larger
+                backgroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)
+                ),
+                foregroundColor: Colors.black,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.play_arrow_rounded,
+                    size: 20,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    "Play",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall!
+                        .copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          
+          // Enhanced Info button
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(25),
+              border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
+            ),
+            child: IconButton(
+              onPressed: () {
+                if (_featuredMovies.isNotEmpty) {
+                  Navigator.pushNamed(
+                    context, 
+                    '/movie-detail',
+                    arguments: {'id': _featuredMovies.first.id},
+                  );
+                }
+              },
+              icon: const Icon(Icons.info_outline_rounded, color: Colors.white, size: 24),
+              iconSize: 24,
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+)
                         ],
                       ),
                     ),
@@ -396,22 +454,22 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
     floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-    floatingActionButton: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Reels button - visible to all users
+    // floatingActionButton: Row(
+    //   mainAxisSize: MainAxisSize.min,
+    //   children: [
+    //     // Reels button - visible to all users
         
-        // Admin button - visible only to admins
-        if (_isAdmin) 
-          FloatingActionButton(
-            heroTag: 'admin_button',
-            onPressed: () => _showMovieManagementOptions(context),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            child: const Icon(Icons.movie_filter),
-            tooltip: 'Manage Movies',
-          ),
-      ],
-    ),
+    //     // Admin button - visible only to admins
+    //     if (_isAdmin) 
+    //       FloatingActionButton(
+    //         heroTag: 'admin_button',
+    //         onPressed: () => _showMovieManagementOptions(context),
+    //         backgroundColor: Theme.of(context).colorScheme.primary,
+    //         child: const Icon(Icons.movie_filter),
+    //         tooltip: 'Manage Movies',
+    //       ),
+    //   ],
+    // ),
   );
   }
 
