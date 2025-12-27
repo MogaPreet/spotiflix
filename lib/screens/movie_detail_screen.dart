@@ -23,7 +23,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   String? _errorMessage;
   bool _isTrailerVisible = false;
   YoutubePlayerController? _youtubeController;
-  
+
   // Add these new fields for similar movies
   List<Movie> _similarMovies = [];
   bool _isLoadingSimilarMovies = false;
@@ -72,7 +72,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             _movie = movie;
             _isLoading = false;
           });
-          
+
           // Trigger content animations after a short delay
           Future.delayed(const Duration(milliseconds: 100), () {
             if (mounted) {
@@ -81,7 +81,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               });
             }
           });
-          
+
           // Load similar movies after the main movie is loaded
           _loadSimilarMovies(movie);
         }
@@ -121,15 +121,15 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       }
     }
   }
-  
+
   // Add this new method to load similar movies
   Future<void> _loadSimilarMovies(Movie movie) async {
     if (!mounted) return;
-    
+
     setState(() {
       _isLoadingSimilarMovies = true;
     });
-    
+
     try {
       // Get movies with similar genres, excluding the current one
       final similarMovies = await _movieService.getSimilarMovies(
@@ -137,7 +137,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
         movie.genres,
         limit: 10,
       );
-      
+
       if (mounted) {
         setState(() {
           _similarMovies = similarMovies;
@@ -433,7 +433,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               width: double.infinity,
               color: Colors.grey[800],
             ),
-            
+
             // Movie info section
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -449,9 +449,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  
+
                   const SizedBox(width: 16),
-                  
+
                   // Title and info
                   Expanded(
                     child: Column(
@@ -464,7 +464,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           color: Colors.grey[800],
                         ),
                         const SizedBox(height: 8),
-                        
+
                         // Year/duration row
                         Row(
                           children: [
@@ -491,7 +491,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           ],
                         ),
                         const SizedBox(height: 8),
-                        
+
                         // Rating
                         Row(
                           children: [
@@ -514,7 +514,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 ],
               ),
             ),
-            
+
             // Action buttons
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -530,7 +530,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  
+
                   // Trailer & download buttons
                   Row(
                     children: [
@@ -559,7 +559,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 ],
               ),
             ),
-            
+
             // Description section
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -573,7 +573,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     color: Colors.grey[800],
                   ),
                   const SizedBox(height: 12),
-                  
+
                   // Description lines
                   Container(
                     height: 14,
@@ -595,7 +595,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 ],
               ),
             ),
-            
+
             // Genres section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -609,7 +609,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     color: Colors.grey[800],
                   ),
                   const SizedBox(height: 12),
-                  
+
                   // Genre pills
                   Row(
                     children: List.generate(
@@ -628,7 +628,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 ],
               ),
             ),
-            
+
             // Cast section
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -642,7 +642,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     color: Colors.grey[800],
                   ),
                   const SizedBox(height: 12),
-                  
+
                   // Cast list
                   SizedBox(
                     height: 100,
@@ -688,7 +688,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 ],
               ),
             ),
-            
+
             // Similar movies section
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -702,7 +702,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     color: Colors.grey[800],
                   ),
                   const SizedBox(height: 12),
-                  
+
                   // Similar movies list
                   SizedBox(
                     height: 170,
@@ -759,7 +759,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 ],
               ),
             ),
-            
+
             // Bottom spacing
             const SizedBox(height: 32),
           ],
@@ -767,15 +767,13 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       ),
     );
   }
-  
- void _showVideoPlayer(BuildContext context) {
+
+  void _showVideoPlayer(BuildContext context) {
     // Random video URLs for demo (you can replace with actual movie URLs)
     final List<String> demoVideos = [
-     'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
     ];
-    
-    
-    
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -788,545 +786,514 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   }
 
 // Update to add animated sections
-Widget _buildMovieDetails() {
-  final hasTrailer = _movie!.trailerUrl.isNotEmpty &&
-      _getYoutubeVideoId(_movie!.trailerUrl) != null;
+  Widget _buildMovieDetails() {
+    final hasTrailer = _movie!.trailerUrl.isNotEmpty &&
+        _getYoutubeVideoId(_movie!.trailerUrl) != null;
 
-  // Define sections with animation delay index
-  final heroSection = _buildHeroSection(hasTrailer);
-  final actionButtonsSection = _buildAnimatedChild(_buildActionButtons(hasTrailer), 0);
-  final descriptionSection = _buildAnimatedChild(_buildDescriptionSection(), 1);
-  final genresSection = _buildAnimatedChild(_buildGenresSection(), 2);
-  final castSection = _buildAnimatedChild(_buildCastSection(), 3);
-  final similarMoviesSection = _buildAnimatedChild(_buildSimilarMoviesWrapper(), 4);
+    // Define sections with animation delay index
+    final heroSection = _buildHeroSection(hasTrailer);
+    final actionButtonsSection =
+        _buildAnimatedChild(_buildActionButtons(hasTrailer), 0);
+    final descriptionSection =
+        _buildAnimatedChild(_buildDescriptionSection(), 1);
+    final genresSection = _buildAnimatedChild(_buildGenresSection(), 2);
+    final castSection = _buildAnimatedChild(_buildCastSection(), 3);
+    final similarMoviesSection =
+        _buildAnimatedChild(_buildSimilarMoviesWrapper(), 4);
 
-  return SingleChildScrollView(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Hero header with backdrop image (not animated for better UX)
-        heroSection,
-        
-        // Action buttons
-        actionButtonsSection,
-        
-        // Description
-        descriptionSection,
-        
-        // Genres
-        genresSection,
-        
-        // Cast
-        castSection,
-        
-        // Similar content section
-        similarMoviesSection,
-        
-        // Bottom spacing
-        const SizedBox(height: 32),
-      ],
-    ),
-  );
-}
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Hero header with backdrop image (not animated for better UX)
+          heroSection,
+
+          // Action buttons
+          actionButtonsSection,
+
+          // Description
+          descriptionSection,
+
+          // Genres
+          genresSection,
+
+          // Cast
+          castSection,
+
+          // Similar content section
+          similarMoviesSection,
+
+          // Bottom spacing
+          const SizedBox(height: 32),
+        ],
+      ),
+    );
+  }
 
 // Now create individual section builder methods:
 
-Widget _buildHeroSection(bool hasTrailer) {
-  return Stack(
-    children: [
-      // Backdrop image
-      SizedBox(
-        height: 300,
-        width: double.infinity,
-        child: Hero(
-          tag: 'movie_backdrop_${_movie!.id}',
-          child: Image.network(
-            _movie!.backdropUrl,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                color: Colors.grey[900],
-                child: const Center(
-                  child: Icon(Icons.broken_image, size: 50, color: Colors.grey),
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-      
-      // Top gradient for app bar visibility
-      Positioned(
-        top: 0,
-        left: 0,
-        right: 0,
-        child: Container(
-          height: 120,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.black.withOpacity(0.7),
-                Colors.black.withOpacity(0.5),
-                Colors.black.withOpacity(0.2),
-                Colors.transparent,
-              ],
-              stops: const [0.0, 0.3, 0.7, 1.0],
-            ),
-          ),
-        ),
-      ),
-      
-      // Play button overlay for trailer if available
-      if (hasTrailer)
-        Positioned.fill(
-          child: Center(
-            child: GestureDetector(
-              onTap: () {
-                final videoId = _getYoutubeVideoId(_movie!.trailerUrl);
-                if (videoId != null) {
-                  _showTrailer(context, videoId);
-                }
+  Widget _buildHeroSection(bool hasTrailer) {
+    return Stack(
+      children: [
+        // Backdrop image
+        SizedBox(
+          height: 350,
+          width: double.infinity,
+          child: Hero(
+            tag: 'movie_backdrop_${_movie!.id}',
+            child: Image.network(
+              _movie!.backdropUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.grey[900],
+                  child: const Center(
+                    child:
+                        Icon(Icons.broken_image, size: 50, color: Colors.grey),
+                  ),
+                );
               },
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
-                ),
-                child: const Icon(
-                  Icons.play_arrow,
-                  color: Colors.white,
-                  size: 36,
-                ),
+            ),
+          ),
+        ),
+
+        // Top gradient for app bar visibility
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: 120,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xff121212).withOpacity(0.7),
+                  const Color(0xff121212).withOpacity(0.5),
+                  const Color(0xff121212).withOpacity(0.2),
+                  Colors.transparent,
+                ],
+                stops: const [0.0, 0.3, 0.7, 1.0],
               ),
             ),
           ),
         ),
-      
-      // Bottom gradient for text visibility
-      Positioned(
-        bottom: 0,
-        left: 0,
-        right: 0,
-        child: Container(
-          height: 150,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: [
-                Colors.black.withOpacity(0.9),
-                Colors.black.withOpacity(0.6),
-                Colors.black.withOpacity(0.3),
-                Colors.transparent,
-              ],
-              stops: const [0.0, 0.4, 0.75, 1.0],
+
+        // Play button overlay for trailer if available
+        // if (hasTrailer)
+        //   Positioned.fill(
+        //     child: Center(
+        //       child: GestureDetector(
+        //         onTap: () {
+        //           final videoId = _getYoutubeVideoId(_movie!.trailerUrl);
+        //           if (videoId != null) {
+        //             _showTrailer(context, videoId);
+        //           }
+        //         },
+        //         child: Container(
+        //           width: 60,
+        //           height: 60,
+        //           decoration: BoxDecoration(
+        //             color: Colors.black.withOpacity(0.6),
+        //             shape: BoxShape.circle,
+        //             border: Border.all(color: Colors.white, width: 2),
+        //           ),
+        //           child: const Icon(
+        //             Icons.play_arrow,
+        //             color: Colors.white,
+        //             size: 36,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+
+        // Bottom gradient for text visibility
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: 150,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  const Color(0xff121212).withOpacity(1),
+                  const Color(0xff121212).withOpacity(0.8),
+                  const Color(0xff121212).withOpacity(0.3),
+                  Colors.transparent,
+                ],
+                stops: const [0.0, 0.4, 0.75, 1.0],
+              ),
             ),
           ),
         ),
-      ),
-      
-      // Movie poster, title, and basic info
-      Positioned(
-        bottom: 0,
-        left: 0,
-        right: 0,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              // Movie poster
-              Hero(
-                tag: 'movie_poster_${_movie!.id}',
-                child: Container(
-                  height: 150,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        blurRadius: 10,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      _movie!.imageUrl,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey[800],
-                          child: const Icon(Icons.broken_image, color: Colors.white),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              
-              const SizedBox(width: 16),
-              
-              // Movie info (title, year, rating)
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Title
-                    Text(
-                      _movie!.title,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black,
-                            blurRadius: 4,
-                          ),
-                        ],
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    
-                    const SizedBox(height: 8),
-                    
-                    // Year and duration
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[800],
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            _movie!.releaseYear,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
+
+        // Movie poster, title, and basic info
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                // Movie poster
+
+                // Movie info (title, year, rating)
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title
+                      Text(
+                        _movie!.title,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 4,
                             ),
-                          ),
+                          ],
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          _movie!.duration,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        if (_movie!.contentType == 'series') ...[
-                          const SizedBox(width: 8),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      // Year and duration
+                      Row(
+                        children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
+                              horizontal: 8,
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(3),
+                              color: Colors.grey[800],
+                              borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
-                              'TV',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey[300],
+                              _movie!.releaseYear,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
                               ),
                             ),
                           ),
-                        ],
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 6),
-                    
-                    // Rating
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.amber[600],
-                          size: 16,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          _movie!.rating.toString(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.white,
+                          const SizedBox(width: 8),
+                          Text(
+                            _movie!.duration,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ],
-  );
-}
+                          if (_movie!.contentType == 'series') ...[
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(3),
+                              ),
+                              child: Text(
+                                'TV',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.grey[300],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
 
-Widget _buildActionButtons(bool hasTrailer) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    child: Column(
-      children: [
-        // Your existing action buttons...
-        ElevatedButton.icon(
-          // Play button code...
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            minimumSize: const Size(double.infinity, 0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+                      const SizedBox(height: 6),
+
+                      // Rating
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.star,
+                            color: Colors.amber[600],
+                            size: 16,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            _movie!.rating.toString(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-          onPressed: () {
-           _showVideoPlayer(context);
-          },
-          icon: const Icon(Icons.play_arrow),
-          label: const Text('Play'),
         ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            // Your existing trailer and download buttons...
-            if (hasTrailer)
+      ],
+    );
+  }
+
+  Widget _buildActionButtons(bool hasTrailer) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Column(
+        children: [
+          // Your existing action buttons...
+          ElevatedButton.icon(
+            // Play button code...
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              minimumSize: const Size(double.infinity, 0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onPressed: () {
+              _showVideoPlayer(context);
+            },
+            icon: const Icon(Icons.play_arrow),
+            label: const Text('Play'),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              // Your existing trailer and download buttons...
+              if (hasTrailer)
+                Expanded(
+                  flex: 1,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 16),
+                      minimumSize: Size(double.infinity, 0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: () {
+                      final videoId = _getYoutubeVideoId(_movie!.trailerUrl);
+                      if (videoId != null) {
+                        _showTrailer(context, videoId);
+                      }
+                    },
+                    icon: const Icon(Icons.videocam),
+                    label: const Text('Trailer'),
+                  ),
+                ),
+              SizedBox(
+                width: 8,
+              ),
+              // Download button
               Expanded(
-                flex: 1,
-               
+                flex: 2,
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.grey[800],
+                    foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                         vertical: 12, horizontal: 16),
-                        minimumSize: Size(double.infinity, 0),
+                    minimumSize: Size(double.infinity, 0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   onPressed: () {
-                    final videoId =
-                        _getYoutubeVideoId(_movie!.trailerUrl);
-                    if (videoId != null) {
-                      _showTrailer(context, videoId);
-                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Downloading...')),
+                    );
                   },
-                  icon: const Icon(Icons.videocam),
-                  label: const Text('Trailer'),
+                  icon: const Icon(Icons.download),
+                  label: const Text('Download'),
                 ),
               ),
-            SizedBox(
-              width: 8,
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDescriptionSection() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Description',
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _movie!.description,
+            style: TextStyle(
+              color: Colors.grey[300],
+              height: 1.5,
             ),
-            // Download button
-            Expanded(
-           flex: 2,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[800],
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 12, horizontal: 16),
-                    minimumSize: Size(double.infinity, 0),
-                  shape: RoundedRectangleBorder(
-                    
-                    borderRadius: BorderRadius.circular(8),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGenresSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Genres',
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: _movie!.genres.map((genre) {
+              return Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.grey[800],
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Colors.grey[700]!,
+                    width: 1,
                   ),
                 ),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Downloading...')),
-                  );
-                },
-                icon: const Icon(Icons.download),
-                label: const Text('Download'),
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildDescriptionSection() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Description',
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          _movie!.description,
-          style: TextStyle(
-            color: Colors.grey[300],
-            height: 1.5,
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildGenresSection() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Genres',
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: _movie!.genres.map((genre) {
-            return Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.grey[700]!,
-                  width: 1,
-                ),
-              ),
-              child: Text(
-                genre,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildCastSection() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Cast & Crew',
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-          height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: _movie!.cast.length + 1, // +1 for director
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                // Director
-                return _buildCastItem(
-                  name: _movie!.director,
-                  role: 'Director',
-                );
-              } else {
-                // Cast
-                return _buildCastItem(
-                  name: _movie!.cast[index - 1],
-                  role: 'Actor',
-                );
-              }
-            },
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildSimilarMoviesWrapper() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'More Like This',
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    fontWeight: FontWeight.bold,
+                child: Text(
+                  genre,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
                   ),
-            ),
-            if (_similarMovies.length > 5)
-              TextButton(
-                onPressed: () {
-                  // Your existing code...
-                  Navigator.pushNamed(
-                    context,
-                    '/movies-by-genre',
-                    arguments: {'genres': _movie!.genres},
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCastSection() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Cast & Crew',
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 100,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _movie!.cast.length + 1, // +1 for director
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  // Director
+                  return _buildCastItem(
+                    name: _movie!.director,
+                    role: 'Director',
                   );
-                },
-                child: Row(
-                  children: [
-                    Text(
-                      'See all',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontSize: 14,
+                } else {
+                  // Cast
+                  return _buildCastItem(
+                    name: _movie!.cast[index - 1],
+                    role: 'Actor',
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSimilarMoviesWrapper() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'More Like This',
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              if (_similarMovies.length > 5)
+                TextButton(
+                  onPressed: () {
+                    // Your existing code...
+                    Navigator.pushNamed(
+                      context,
+                      '/movies-by-genre',
+                      arguments: {'genres': _movie!.genres},
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        'See all',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
-                    Icon(
-                      Icons.chevron_right,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 16,
-                    ),
-                  ],
+                      Icon(
+                        Icons.chevron_right,
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 16,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        _buildSimilarMoviesSection(),
-      ],
-    ),
-  );
-}
+            ],
+          ),
+          const SizedBox(height: 12),
+          _buildSimilarMoviesSection(),
+        ],
+      ),
+    );
+  }
 
   Widget _buildCastItem({required String name, required String role}) {
     return Container(
@@ -1379,7 +1346,7 @@ Widget _buildSimilarMoviesWrapper() {
       ),
     );
   }
-  
+
   // Replace the existing "More Like This" section with this:
   Widget _buildSimilarMoviesSection() {
     if (_isLoadingSimilarMovies) {
@@ -1405,7 +1372,7 @@ Widget _buildSimilarMoviesWrapper() {
         ),
       );
     }
-    
+
     if (_similarMovies.isEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
@@ -1420,9 +1387,9 @@ Widget _buildSimilarMoviesWrapper() {
         ),
       );
     }
-    
+
     return SizedBox(
-      height: 190,
+      height: 230,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: _similarMovies.length,
@@ -1431,7 +1398,7 @@ Widget _buildSimilarMoviesWrapper() {
           return GestureDetector(
             onTap: () {
               Navigator.pushReplacement(
-                context, 
+                context,
                 MaterialPageRoute(
                   builder: (context) => MovieDetailScreen(),
                   settings: RouteSettings(
@@ -1441,7 +1408,7 @@ Widget _buildSimilarMoviesWrapper() {
               );
             },
             child: Container(
-              width: 120,
+              width: 140,
               margin: const EdgeInsets.only(right: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1472,7 +1439,8 @@ Widget _buildSimilarMoviesWrapper() {
                           return Container(
                             color: Colors.grey[850],
                             child: const Center(
-                              child: Icon(Icons.image_not_supported, color: Colors.grey),
+                              child: Icon(Icons.image_not_supported,
+                                  color: Colors.grey),
                             ),
                           );
                         },

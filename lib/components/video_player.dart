@@ -30,23 +30,23 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
   @override
   void initState() {
     super.initState();
-    
+
     // Initialize animation controllers
     _controlsAnimationController = AnimationController(
       duration: const Duration(milliseconds: 400),
       vsync: this,
     );
-    
+
     _playPauseAnimationController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    
+
     _buttonPressAnimationController = AnimationController(
       duration: const Duration(milliseconds: 150),
       vsync: this,
     );
-    
+
     _controlsOpacity = Tween<double>(
       begin: 0.0,
       end: 1.0,
@@ -54,7 +54,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
       parent: _controlsAnimationController,
       curve: Curves.easeInOutCubic,
     ));
-    
+
     _playPauseScale = Tween<double>(
       begin: 0.8,
       end: 1.0,
@@ -62,7 +62,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
       parent: _playPauseAnimationController,
       curve: Curves.elasticOut,
     ));
-    
+
     _buttonScale = Tween<double>(
       begin: 1.0,
       end: 0.9,
@@ -100,9 +100,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
         builder: (context, provider, child) {
           // Animate controls visibility
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (provider.showControls && !_controlsAnimationController.isCompleted) {
+            if (provider.showControls &&
+                !_controlsAnimationController.isCompleted) {
               _controlsAnimationController.forward();
-            } else if (!provider.showControls && _controlsAnimationController.isCompleted) {
+            } else if (!provider.showControls &&
+                _controlsAnimationController.isCompleted) {
               _controlsAnimationController.reverse();
             }
           });
@@ -126,93 +128,31 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     if (provider.isLoading) {
       return _buildLoadingScreen();
     }
-    
+
     if (provider.hasError) {
       return _buildErrorScreen(provider);
     }
-    
+
     if (!provider.isInitialized || provider.controller == null) {
       return _buildLoadingScreen();
     }
-    
+
     return _buildVideoPlayer(provider);
   }
 
   Widget _buildLoadingScreen() {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Colors.black,
-            Colors.grey[900]!,
-            Colors.black,
-          ],
-        ),
-      ),
+      color: Colors.black,
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).colorScheme.primary,
-                    Theme.of(context).colorScheme.primary.withOpacity(0.6),
-                  ],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                    blurRadius: 20,
-                    spreadRadius: 5,
-                  ),
-                ],
-              ),
-              child: Center(
-                child: SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 4,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                ),
-              ),
+        child: SizedBox(
+          width: 50,
+          height: 50,
+          child: CircularProgressIndicator(
+            strokeWidth: 3,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              const Color(0xFFE50914), // Netflix red
             ),
-            const SizedBox(height: 40),
-            Text(
-              'Loading ${widget.movieTitle}...',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.5,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white.withOpacity(0.2)),
-              ),
-              child: const Text(
-                'Preparing your cinematic experience',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -325,23 +265,29 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        gradient: isPrimary ? LinearGradient(
-          colors: [
-            Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.primary.withOpacity(0.8),
-          ],
-        ) : null,
-        border: isPrimary ? null : Border.all(
-          color: Colors.white.withOpacity(0.3),
-          width: 1.5,
-        ),
-        boxShadow: isPrimary ? [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ] : null,
+        gradient: isPrimary
+            ? LinearGradient(
+                colors: [
+                  Theme.of(context).colorScheme.primary,
+                  Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                ],
+              )
+            : null,
+        border: isPrimary
+            ? null
+            : Border.all(
+                color: Colors.white.withOpacity(0.3),
+                width: 1.5,
+              ),
+        boxShadow: isPrimary
+            ? [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : null,
       ),
       child: Material(
         color: Colors.transparent,
@@ -383,55 +329,22 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
               child: VideoPlayer(provider.controller!),
             ),
           ),
-          
-          // Buffering indicator
+
+          // Minimal buffering indicator - Netflix style
           if (provider.isBuffering)
             Center(
-              child: Container(
-                padding: const EdgeInsets.all(32),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: Colors.white.withOpacity(0.1),
-                    width: 1,
+              child: SizedBox(
+                width: 45,
+                height: 45,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    const Color(0xFFE50914), // Netflix red
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.5),
-                      blurRadius: 20,
-                      spreadRadius: 5,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 4,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Buffering...',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ),
-          
+
           // Controls overlay
           if (provider.showControls)
             AnimatedBuilder(
@@ -455,12 +368,13 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.black.withOpacity(0.9),
+            Colors.black.withOpacity(0.7),
             Colors.transparent,
             Colors.transparent,
-            Colors.black.withOpacity(0.9),
+            Colors.transparent,
+            Colors.black.withOpacity(0.85),
           ],
-          stops: const [0.0, 0.3, 0.7, 1.0],
+          stops: const [0.0, 0.15, 0.5, 0.75, 1.0],
         ),
       ),
       child: Column(
@@ -476,31 +390,40 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
   Widget _buildTopControls(VideoPlayerProvider provider) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildGlassButton(
-              icon: Icons.arrow_back_ios_new_rounded,
+            // Back button
+            IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new_rounded),
+              iconSize: 24,
+              color: Colors.white,
               onPressed: () {
                 provider.restoreOrientationMode();
                 Navigator.pop(context);
               },
-              size: 20,
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 12),
+            // Title
             Expanded(
               child: Text(
                 widget.movieTitle,
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.5,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
+            ),
+            // Cast button
+            IconButton(
+              icon: const Icon(Icons.cast_rounded),
+              iconSize: 24,
+              color: Colors.white,
+              onPressed: () {
+                // Cast functionality
+              },
             ),
           ],
         ),
@@ -564,42 +487,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
         _handlePlayPauseAnimation();
         provider.togglePlayPause();
       },
-      child: Container(
-        width: 120,
-        height: 120,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.white.withOpacity(0.25),
-              Colors.white.withOpacity(0.1),
-            ],
-          ),
-          border: Border.all(
-            color: Colors.white.withOpacity(0.3),
-            width: 2,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 20,
-              spreadRadius: 5,
-            ),
-            BoxShadow(
-              color: Colors.white.withOpacity(0.1),
-              blurRadius: 10,
-              spreadRadius: -5,
-              offset: const Offset(-5, -5),
-            ),
-          ],
-        ),
-        child: Icon(
-          provider.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
-          color: Colors.white,
-          size: 56,
-        ),
+      child: Icon(
+        provider.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+        color: Colors.white,
+        size: 72,
       ),
     );
   }
@@ -608,162 +499,164 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen>
     required IconData icon,
     required VoidCallback onPressed,
   }) {
-    return _buildGlassButton(
-      icon: icon,
-      onPressed: onPressed,
-      size: 32,
-      padding: 20,
-    );
-  }
-
-  Widget _buildGlassButton({
-    required IconData icon,
-    required VoidCallback onPressed,
-    required double size,
-    double padding = 16,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Colors.white.withOpacity(0.2),
-            Colors.white.withOpacity(0.05),
-          ],
-        ),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.2),
-          width: 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 15,
-            spreadRadius: 2,
-          ),
-          BoxShadow(
-            color: Colors.white.withOpacity(0.1),
-            blurRadius: 8,
-            spreadRadius: -3,
-            offset: const Offset(-3, -3),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(50),
-          child: Padding(
-            padding: EdgeInsets.all(padding),
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: size,
-            ),
-          ),
-        ),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Icon(
+        icon,
+        color: Colors.white,
+        size: 40,
       ),
     );
   }
 
   Widget _buildBottomControls(VideoPlayerProvider provider) {
     return SafeArea(
-      child: Container(
-        padding: const EdgeInsets.all(24.0),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.transparent,
-              Colors.black.withOpacity(0.8),
-            ],
-          ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Netflix-style progress bar
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                trackHeight: 3,
+                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
+                overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
+                activeTrackColor: const Color(0xFFE50914), // Netflix red
+                inactiveTrackColor: Colors.white.withOpacity(0.3),
+                thumbColor: const Color(0xFFE50914),
+                overlayColor: const Color(0xFFE50914).withOpacity(0.2),
+              ),
+              child: Slider(
+                value: provider.position.inMilliseconds.toDouble(),
+                min: 0,
+                max: provider.duration.inMilliseconds
+                    .toDouble()
+                    .clamp(1, double.infinity),
+                onChanged: (value) {
+                  provider.seekTo(Duration(milliseconds: value.toInt()));
+                },
+              ),
+            ),
+            const SizedBox(height: 8),
+            // Bottom row with time and controls
+            Row(
+              children: [
+                // Time display
+                Text(
+                  '${provider.formatDuration(provider.position)} / ${provider.formatDuration(provider.duration)}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    fontFeatures: [FontFeature.tabularFigures()],
+                  ),
+                ),
+                const Spacer(),
+                // Playback speed
+                IconButton(
+                  icon: const Text(
+                    '1x',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  onPressed: () {
+                    // Show playback speed options
+                    _showPlaybackSpeedDialog(provider);
+                  },
+                ),
+                // Episodes/Subtitles
+                IconButton(
+                  icon: const Icon(Icons.subtitles_outlined),
+                  iconSize: 24,
+                  color: Colors.white,
+                  onPressed: () {
+                    // Show subtitles options
+                  },
+                ),
+                // Fullscreen toggle
+                IconButton(
+                  icon: Icon(
+                    provider.isFullscreen
+                        ? Icons.fullscreen_exit_rounded
+                        : Icons.fullscreen_rounded,
+                  ),
+                  iconSize: 28,
+                  color: Colors.white,
+                  onPressed: () {
+                    provider.toggleFullscreen();
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showPlaybackSpeedDialog(VideoPlayerProvider provider) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: const BoxDecoration(
+          color: Color(0xFF1A1A1A),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            // Progress bar container
+            const SizedBox(height: 16),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              width: 40,
+              height: 4,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.white.withOpacity(0.05),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.1),
-                  width: 1,
-                ),
-              ),
-              child: VideoProgressIndicator(
-                provider.controller!,
-                allowScrubbing: true,
-                colors: VideoProgressColors(
-                  playedColor: Theme.of(context).colorScheme.primary,
-                  bufferedColor: Colors.white.withOpacity(0.3),
-                  backgroundColor: Colors.white.withOpacity(0.1),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                color: Colors.grey[600],
+                borderRadius: BorderRadius.circular(2),
               ),
             ),
             const SizedBox(height: 20),
-            // Time display and controls
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.2),
-                      width: 1,
-                    ),
-                  ),
-                  child: Text(
-                    provider.formatDuration(provider.position),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      fontFeatures: [FontFeature.tabularFigures()],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  '/',
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 18,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.1),
-                      width: 1,
-                    ),
-                  ),
-                  child: Text(
-                    provider.formatDuration(provider.duration),
-                    style: TextStyle(
-                      color: Colors.grey[300],
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      fontFeatures: const [FontFeature.tabularFigures()],
-                    ),
-                  ),
-                ),
-                
-              ],
+            const Text(
+              'Playback Speed',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
             ),
+            const SizedBox(height: 16),
+            ...[
+              0.5,
+              0.75,
+              1.0,
+              1.25,
+              1.5,
+              2.0,
+            ].map((speed) => ListTile(
+                  onTap: () {
+                    provider.setPlaybackSpeed(speed);
+                    Navigator.pop(context);
+                  },
+                  title: Text(
+                    speed == 1.0 ? 'Normal' : '${speed}x',
+                    style: TextStyle(
+                      color: provider.playbackSpeed == speed
+                          ? const Color(0xFFE50914)
+                          : Colors.white,
+                      fontWeight: provider.playbackSpeed == speed
+                          ? FontWeight.w600
+                          : FontWeight.normal,
+                    ),
+                  ),
+                  trailing: provider.playbackSpeed == speed
+                      ? const Icon(Icons.check, color: Color(0xFFE50914))
+                      : null,
+                )),
+            const SizedBox(height: 24),
           ],
         ),
       ),
